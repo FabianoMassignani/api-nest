@@ -1,8 +1,8 @@
-export interface IProductResponse {
-  data: Array<IResult>;
-}
+export type IProductsResponse = {
+  data: IProduct[];
+};
 
-export interface IResult {
+export type IProduct = {
   id: number;
   nome: string;
   descricao: string;
@@ -17,4 +17,9 @@ export interface IResult {
   barcode: string; // Código de barras
   createdAt: Date;
   updatedAt: Date;
-}
+};
+
+export type FindAllParams = {
+  limit: number;
+  offset: number;
+};
