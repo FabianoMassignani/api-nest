@@ -1,5 +1,5 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { CreateUserResponse, UserDto } from './users.interface';
+import { CreateUserResponse, IUser } from './users.interface';
 import { UserNewParams } from './users.validator';
 import { hashSync as bcryptHashSync } from 'bcrypt';
 import { UserEntity } from '../db/entities/user.entity';
@@ -25,7 +25,7 @@ export class UsersService {
     const dbUser = new UserEntity();
 
     dbUser.username = newUser.username;
-    dbUser.passwordHash = bcryptHashSync(newUser.password, 10);
+    dbUser.password = bcryptHashSync(newUser.password, 10);
 
     await this.usersRepository.save(dbUser);
 
@@ -35,7 +35,7 @@ export class UsersService {
     };
   }
 
-  async findByUserName(username: string): Promise<UserDto | null> {
+  async findByUserName(username: string): Promise<IUser | null> {
     const userFound = await this.usersRepository.findOne({
       where: { username },
     });
@@ -47,7 +47,7 @@ export class UsersService {
     return {
       id: userFound.id,
       username: userFound.username,
-      password: userFound.passwordHash,
+      password: userFound.password,
     };
   }
 }

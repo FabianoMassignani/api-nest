@@ -5,8 +5,6 @@ import {
   Post,
   Put,
   Query,
-  UsePipes,
-  ValidationPipe,
   UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';

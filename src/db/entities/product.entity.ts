@@ -1,10 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import { Entity, Column } from 'typeorm';
+import { BaseEntity } from './base.entity';
+import { IProduct } from '../../product/product.interface';
 @Entity({ name: 'product' })
-export class ProductEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id?: string;
-
+export class ProductEntity extends BaseEntity implements IProduct {
   @Column({ type: 'varchar' })
   nome: string;
 
@@ -37,10 +35,4 @@ export class ProductEntity {
 
   @Column({ type: 'varchar' })
   barcode: string;
-
-  @Column({ type: 'timestamp' })
-  createdAt: Date;
-
-  @Column({ type: 'timestamp' })
-  updatedAt: Date;
 }

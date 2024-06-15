@@ -1,5 +1,5 @@
-export class UserDto {
-  id: string;
+export class IUser {
+  id?: string;
   username: string;
   password: string;
 }

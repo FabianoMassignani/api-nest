@@ -13,8 +13,8 @@ export type IProduct = {
   marca: string;
   categoria: string;
   colecao: string;
-  ncm: string; // Nomenclatura Comum do Mercosul
-  barcode: string; // Código de barras
+  ncm: string;
+  barcode: string;
   createdAt?: Date;
   updatedAt?: Date;
 };
