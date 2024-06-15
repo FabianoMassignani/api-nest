@@ -3,7 +3,7 @@ export type IProductsResponse = {
 };
 
 export type IProduct = {
-  id: number;
+  id?: string;
   nome: string;
   descricao: string;
   preco: number;
@@ -15,8 +15,8 @@ export type IProduct = {
   colecao: string;
   ncm: string; // Nomenclatura Comum do Mercosul
   barcode: string; // Código de barras
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 };
 
 export type FindAllParams = {

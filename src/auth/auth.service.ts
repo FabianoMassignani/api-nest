@@ -23,7 +23,7 @@ export class AuthService {
     const user = await this.usersService.findByUserName(username);
 
     if (!user || !bcryptCompareSync(password, user.password)) {
-      throw new UnauthorizedException('Invalid credentials');
+      throw new UnauthorizedException('Credenciais inválidas');
     }
 
     const playload = { sub: user.id, username: user.username };

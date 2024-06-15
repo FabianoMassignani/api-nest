@@ -7,6 +7,7 @@ import {
   Query,
   UsePipes,
   ValidationPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { ProductNewParams } from './product.validator';
@@ -15,7 +16,9 @@ import {
   IProduct,
   FindAllParams,
 } from './product.interface';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -31,23 +34,11 @@ export class ProductController {
   }
 
   @Post()
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-    }),
-  )
   async post(@Body() Data: ProductNewParams): Promise<IProduct> {
-    return this.productService.post(Data);
+    return this.productService.create(Data);
   }
 
   @Put()
-  @UsePipes(
-    new ValidationPipe({
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-    }),
-  )
   async put(@Body() Data: ProductNewParams): Promise<IProduct> {
     return this.productService.put(Data);
   }

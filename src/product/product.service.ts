@@ -4,37 +4,28 @@ import {
   IProductsResponse,
   FindAllParams,
 } from './product.interface';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ProductEntity } from '../db/entities/product.entity';
 
 @Injectable()
 export class ProductService {
+  constructor(
+    @InjectRepository(ProductEntity)
+    private readonly productRepository: Repository<ProductEntity>,
+  ) {}
+
   async getAll(params: FindAllParams): Promise<IProductsResponse> {
     try {
-      const data = [
-        {
-          id: 1,
-          nome: 'Camiseta',
-          descricao: 'Camiseta de algodão',
-          preco: 50.0,
-          estoque: 100,
-          icms: 0.18,
-          fornecedor: 'Fornecedor 1',
-          marca: 'Marca 1',
-          categoria: 'Categoria 1',
-          colecao: 'Coleção 1',
-          ncm: '6109.10.00',
-          barcode: '1234567890123',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ];
+      const [data, total] = await this.productRepository.findAndCount({
+        take: params.limit,
+        skip: params.offset,
+      });
 
       return { data };
     } catch (error) {
       throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error?.message || 'Internal server error',
-        },
+        'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
@@ -42,102 +33,88 @@ export class ProductService {
 
   async getById(id: string): Promise<IProduct> {
     try {
-      if (!id) {
-        throw new HttpException(
-          {
-            status: HttpStatus.BAD_REQUEST,
-            error: 'Id is required',
-          },
-          HttpStatus.BAD_REQUEST,
-        );
+      const foundProduct = await this.productRepository.findOne({
+        where: { id },
+      });
+
+      if (!foundProduct) {
+        throw new HttpException('Produto não encontrado', HttpStatus.NOT_FOUND);
       }
 
-      const data = {
-        id: 1,
-        nome: 'Camiseta',
-        descricao: 'Camiseta de algodão',
-        preco: 50.0,
-        estoque: 100,
-        icms: 0.18,
-        fornecedor: 'Fornecedor 1',
-        marca: 'Marca 1',
-        categoria: 'Categoria 1',
-        colecao: 'Coleção 1',
-        ncm: '6109.10.00',
-        barcode: '1234567890123',
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      };
-
-      return data;
+      return foundProduct;
     } catch (error) {
       throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error?.message || 'Internal server error',
-        },
+        'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
-  async post(data): Promise<IProduct> {
+  async create(data: IProduct): Promise<IProduct> {
     try {
-      const data = {
-        id: 1,
-        nome: 'Camiseta',
-        descricao: 'Camiseta de algodão',
-        preco: 50.0,
-        estoque: 100,
-        icms: 0.18,
-        fornecedor: 'Fornecedor 1',
-        marca: 'Marca 1',
-        categoria: 'Categoria 1',
-        colecao: 'Coleção 1',
-        ncm: '6109.10.00',
-        barcode: '1234567890123',
+      const product: ProductEntity = {
+        nome: data.nome,
+        descricao: data.descricao,
+        preco: data.preco,
+        estoque: data.estoque,
+        icms: data.icms,
+        fornecedor: data.fornecedor,
+        marca: data.marca,
+        categoria: data.categoria,
+        colecao: data.colecao,
+        ncm: data.ncm,
+        barcode: data.barcode,
         createdAt: new Date(),
         updatedAt: new Date(),
       };
 
-      return data;
+      const result = await this.productRepository.save(product);
+
+      return result;
     } catch (error) {
       throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error?.message || 'Internal server error',
-        },
+        'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
   }
 
-  async put(data): Promise<IProduct> {
+  async put(data: IProduct): Promise<IProduct> {
     try {
-      const data = {
-        id: 1,
-        nome: 'Camiseta',
-        descricao: 'Camiseta de algodão',
-        preco: 50.0,
-        estoque: 100,
-        icms: 0.18,
-        fornecedor: 'Fornecedor 1',
-        marca: 'Marca 1',
-        categoria: 'Categoria 1',
-        colecao: 'Coleção 1',
-        ncm: '6109.10.00',
-        barcode: '1234567890123',
-        createdAt: new Date(),
+      if (!data.id) {
+        throw new HttpException('Id não informado', HttpStatus.BAD_REQUEST);
+      }
+
+      const productExists = await this.productRepository.findOne({
+        where: { id: data.id },
+      });
+
+      if (!productExists) {
+        throw new HttpException('Produto não encontrado', HttpStatus.NOT_FOUND);
+      }
+
+      const product: ProductEntity = {
+        ...productExists,
+        nome: data.nome,
+        descricao: data.descricao,
+        preco: data.preco,
+        estoque: data.estoque,
+        icms: data.icms,
+        fornecedor: data.fornecedor,
+        marca: data.marca,
+        categoria: data.categoria,
+        colecao: data.colecao,
+        ncm: data.ncm,
+        barcode: data.barcode,
         updatedAt: new Date(),
       };
 
-      return data;
+      const result = await this.productRepository.save(product);
+
+      return result;
     } catch (error) {
       throw new HttpException(
-        {
-          status: HttpStatus.INTERNAL_SERVER_ERROR,
-          error: error?.message || 'Internal server error',
-        },
+        'Internal server error',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
