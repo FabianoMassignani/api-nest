@@ -3,7 +3,7 @@ import {
   IProduct,
   IProductsResponse,
   FindAllParams,
-} from './product.interface';
+} from './interfaces/product.interface';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductEntity } from '../db/entities/product.entity';

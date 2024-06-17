@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthResponseDto, AuthPayloadDto } from './auth.interface';
+import { AuthResponseDto, AuthPayloadDto } from './interfaces/auth.interface';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { UsersService } from '../users/users.service';

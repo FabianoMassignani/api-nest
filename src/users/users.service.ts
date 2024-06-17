@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
-import { CreateUserResponse, IUser } from './users.interface';
-import { UserNewParams } from './users.validator';
+import { CreateUserResponse, IUser } from './interfaces/users.interface';
+import { UserNewParams } from './dto/users.validator';
 import { hashSync as bcryptHashSync } from 'bcrypt';
 import { UserEntity } from '../db/entities/user.entity';
 import { Repository } from 'typeorm';

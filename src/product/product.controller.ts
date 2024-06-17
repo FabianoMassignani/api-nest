@@ -8,12 +8,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
-import { ProductNewParams } from './product.validator';
+import { ProductNewParams } from './dto/product.validator';
 import {
   IProductsResponse,
   IProduct,
   FindAllParams,
-} from './product.interface';
+} from './interfaces/product.interface';
 import { AuthGuard } from '../auth/auth.guard';
 
 @UseGuards(AuthGuard)

@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { CreateUserResponse } from './users.interface.js';
-import { UserNewParams } from './users.validator.js';
+import { CreateUserResponse } from './interfaces/users.interface.js';
+import { UserNewParams } from './dto/users.validator.js';
 
 @Controller('users')
 export class UsersController {

@@ -1,6 +1,6 @@
 import { Entity, Column } from 'typeorm';
 import { BaseEntity } from './base.entity';
-import { IProduct } from '../../product/product.interface';
+import { IProduct } from '../../product/interfaces/product.interface';
 @Entity({ name: 'product' })
 export class ProductEntity extends BaseEntity implements IProduct {
   @Column({ type: 'varchar' })
